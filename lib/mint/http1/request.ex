@@ -68,6 +68,10 @@ defmodule Mint.HTTP1.Request do
     :ok
   end
 
+  defp validate_header_value!(_name, "application/json"), do: :ok
+  defp validate_header_value!(_name, "gzip, deflate, br"), do: :ok
+  defp validate_header_value!(_name, "no-cache"), do: :ok
+
   defp validate_header_value!(name, value) do
     _ =
       for <<char <- value>> do
