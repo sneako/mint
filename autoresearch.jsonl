@@ -40,3 +40,5 @@
 {"run":39,"commit":"b35eaa9","metric":52510,"metrics":{},"status":"discard","description":"Add tokenish fast-path validators for user-agent and x-request-id values before generic fallback","timestamp":1773409608152,"segment":0}
 {"run":40,"commit":"b35eaa9","metric":53664,"metrics":{},"status":"discard","description":"Add a digit-only fast path for content-length value validation with generic fallback for unusual cases","timestamp":1773409645041,"segment":0}
 {"run":41,"commit":"b35eaa9","metric":49910,"metrics":{},"status":"discard","description":"Re-test a single pair fast path for the longest common header pair: accept-encoding with gzip, deflate, br","timestamp":1773409708939,"segment":0}
+{"type":"config","name":"Mint HTTP/2 request encoding hot paths","metricName":"total_us","metricUnit":"µs","bestDirection":"lower"}
+{"run":1,"commit":"47ba773","metric":0,"metrics":{},"status":"crash","description":"Switch autoresearch target to HTTP/2 request encoding; first baseline failed because the synthetic benchmark reused depleted flow-control windows","timestamp":1773411575470,"segment":0}

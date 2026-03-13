@@ -2,4 +2,4 @@
 set -euo pipefail
 
 MIX_ENV=dev mix compile --warnings-as-errors >/dev/null
-MIX_ENV=dev mix run --no-start --no-compile bench/http1_hot_paths.exs
+MIX_ENV=dev mix run --no-start --no-compile bench/http2_request_path.exs
