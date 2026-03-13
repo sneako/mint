@@ -6,3 +6,4 @@
 {"run":5,"commit":"e3b98b9","metric":0,"metrics":{},"status":"crash","description":"Try a manual ASCII content-length parser to replace trim-and-Integer.parse in HTTP/1 header parsing","timestamp":1773407966047,"segment":0}
 {"run":6,"commit":"e3b98b9","metric":105458,"metrics":{},"status":"discard","description":"Replace content-length trim-plus-parse with a manual ASCII parser in Mint.HTTP1.Parse","timestamp":1773407993158,"segment":0}
 {"run":7,"commit":"7a90baa","metric":79224,"metrics":{},"status":"keep","description":"Build connection and transfer-encoding tokens via byte lists instead of binary appends in HTTP/1 parsing","timestamp":1773408035703,"segment":0}
+{"run":8,"commit":"5e5b5ad","metric":72448,"metrics":{},"status":"keep","description":"Restore the original header validators after confirming the recursive request-path rewrite was a regression","timestamp":1773408071897,"segment":0}

@@ -21,11 +21,17 @@ defmodule Mint.HTTP1.Request do
   end
 
   defp encode_headers(headers) do
-    Enum.reduce(headers, "", fn {name, value}, acc ->
-      validate_header_name!(name)
-      validate_header_value!(name, value)
-      [acc, name, ": ", value, "\r\n"]
-    end)
+    headers
+    |> encode_headers([])
+    |> :lists.reverse()
+  end
+
+  defp encode_headers([], acc), do: acc
+
+  defp encode_headers([{name, value} | headers], acc) do
+    validate_header_name!(name)
+    validate_header_value!(name, value)
+    encode_headers(headers, ["\r\n", value, ": ", name | acc])
   end
 
   defp encode_body(nil), do: ""
