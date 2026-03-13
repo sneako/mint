@@ -30,3 +30,4 @@
 {"run":29,"commit":"6b1f66e","metric":0,"metrics":{},"status":"crash","description":"Try host-like ASCII fast paths for host and x-forwarded-for header value validation","timestamp":1773409052080,"segment":0}
 {"run":30,"commit":"6b1f66e","metric":52496,"metrics":{},"status":"discard","description":"Use host-like ASCII fast paths for host and x-forwarded-for header value validation before generic fallback","timestamp":1773409071624,"segment":0}
 {"run":31,"commit":"6b1f66e","metric":0,"metrics":{},"status":"crash","description":"Try fusing request line, headers, and trailer into one flatter iodata chain for Request.encode/4","timestamp":1773409148797,"segment":0}
+{"run":32,"commit":"8c0226f","metric":50230,"metrics":{},"status":"keep","description":"Flatten Request.encode/4 and trailing-header encoding into one iodata chain with threaded header tails","timestamp":1773409201126,"segment":0}

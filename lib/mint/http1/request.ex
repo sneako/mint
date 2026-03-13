@@ -3,13 +3,43 @@ defmodule Mint.HTTP1.Request do
 
   import Mint.HTTP1.Parse
 
+  def encode(method, target, headers, body)
+
+  def encode(method, target, headers, nil) do
+    body = [
+      method,
+      ?\s,
+      target,
+      " HTTP/1.1\r\n"
+      | encode_headers(headers, ["\r\n"])
+    ]
+
+    {:ok, body}
+  catch
+    {:mint, reason} -> {:error, reason}
+  end
+
+  def encode(method, target, headers, :stream) do
+    body = [
+      method,
+      ?\s,
+      target,
+      " HTTP/1.1\r\n"
+      | encode_headers(headers, ["\r\n"])
+    ]
+
+    {:ok, body}
+  catch
+    {:mint, reason} -> {:error, reason}
+  end
+
   def encode(method, target, headers, body) do
     body = [
       method,
       ?\s,
       target,
       " HTTP/1.1\r\n"
-      | encode_headers(headers, ["\r\n", encode_body(body)])
+      | encode_headers(headers, ["\r\n", body])
     ]
 
     {:ok, body}
@@ -24,10 +54,6 @@ defmodule Mint.HTTP1.Request do
     validate_header_value!(name, value)
     [name, ": ", value, "\r\n" | encode_headers(headers, tail)]
   end
-
-  defp encode_body(nil), do: ""
-  defp encode_body(:stream), do: ""
-  defp encode_body(body), do: body
 
   def encode_chunk(:eof) do
     "0\r\n\r\n"
