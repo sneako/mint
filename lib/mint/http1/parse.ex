@@ -50,12 +50,13 @@ defmodule Mint.HTTP1.Parse do
        when is_whitespace(char) or is_comma(char),
        do: token_list_downcase(rest, acc)
 
-  defp token_list_downcase(rest, acc), do: token_downcase(rest, _token_acc = <<>>, acc)
+  defp token_list_downcase(rest, acc), do: token_downcase(rest, _token_acc = [], acc)
 
   defp token_downcase(<<char, rest::binary>>, token_acc, acc) when is_tchar(char),
-    do: token_downcase(rest, <<token_acc::binary, downcase_ascii_char(char)>>, acc)
+    do: token_downcase(rest, [downcase_ascii_char(char) | token_acc], acc)
 
-  defp token_downcase(rest, token_acc, acc), do: token_list_sep_downcase(rest, [token_acc | acc])
+  defp token_downcase(rest, token_acc, acc),
+    do: token_list_sep_downcase(rest, [:erlang.list_to_binary(:lists.reverse(token_acc)) | acc])
 
   defp token_list_sep_downcase(<<>>, acc), do: {:ok, :lists.reverse(acc)}
 
