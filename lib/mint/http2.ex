@@ -509,8 +509,7 @@ defmodule Mint.HTTP2 do
 
   def request(%__MODULE__{} = conn, method, path, headers, body)
       when is_binary(method) and is_binary(path) and is_list(headers) do
-    headers = Headers.lower_raws(headers)
-    has_pseudo_headers? = Enum.any?(headers, fn {name, _value} -> String.starts_with?(name, ":") end)
+    {headers, has_pseudo_headers?} = normalize_request_headers(headers)
 
     headers =
       headers
@@ -1335,6 +1334,15 @@ defmodule Mint.HTTP2 do
       {name, _value} ->
         raise ArgumentError, "unknown setting parameter #{inspect(name)}"
     end)
+  end
+
+  defp normalize_request_headers(headers) do
+    headers
+    |> Enum.reduce({[], false}, fn {name, value}, {headers, has_pseudo_headers?} ->
+      name = Headers.lower_raw(name)
+      {[{name, value} | headers], has_pseudo_headers? or match?(<<?:, _::binary>>, name)}
+    end)
+    |> then(fn {headers, has_pseudo_headers?} -> {:lists.reverse(headers), has_pseudo_headers?} end)
   end
 
   defp add_default_headers(headers, body) do

@@ -43,3 +43,4 @@
 {"type":"config","name":"Mint HTTP/2 request encoding hot paths","metricName":"total_us","metricUnit":"µs","bestDirection":"lower"}
 {"run":1,"commit":"47ba773","metric":0,"metrics":{},"status":"crash","description":"Switch autoresearch target to HTTP/2 request encoding; first baseline failed because the synthetic benchmark reused depleted flow-control windows","timestamp":1773411575470,"segment":0}
 {"run":2,"commit":"ae88233","metric":42150,"metrics":{},"status":"keep","description":"Switch autoresearch to HTTP/2 request encoding with a synthetic benchmark and focused HTTP/2 checks","timestamp":1773411602692,"segment":0}
+{"run":3,"commit":"bc72033","metric":36819,"metrics":{},"status":"keep","description":"Skip pseudo-header sorting in HTTP/2 requests unless user-supplied pseudo-headers are actually present","timestamp":1773411656645,"segment":0}
