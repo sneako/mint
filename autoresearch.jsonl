@@ -11,3 +11,8 @@
 {"run":10,"commit":"df4b11d","metric":74182,"metrics":{},"status":"discard","description":"Replace String.downcase(:ascii) with a custom ASCII binary builder in header normalization","timestamp":1773408133396,"segment":0}
 {"run":11,"commit":"d4865db","metric":71327,"metrics":{},"status":"keep","description":"Build HTTP/1 header iodata directly with recursive clauses instead of reversing an accumulator","timestamp":1773408184662,"segment":0}
 {"run":12,"commit":"d4865db","metric":94214,"metrics":{},"status":"discard","description":"Fast-path content-length parsing by skipping trim_trailing unless the final byte is whitespace","timestamp":1773408236953,"segment":0}
+{"run":13,"commit":"e8e9ba2","metric":69883,"metrics":{},"status":"keep","description":"Inline common HTTP/1 atom header mappings directly in Response.decode_header/1","timestamp":1773408295969,"segment":0}
+{"run":14,"commit":"e8e9ba2","metric":73924,"metrics":{},"status":"discard","description":"Specialize Request.encode/4 for nil and :stream bodies to avoid the extra encode_body/1 hop","timestamp":1773408342715,"segment":0}
+{"run":15,"commit":"e8e9ba2","metric":80301,"metrics":{},"status":"discard","description":"Split binary and uncommon-atom fallbacks in Response.decode_header/1 to avoid the generic helper dispatch","timestamp":1773408379080,"segment":0}
+{"run":16,"commit":"e8e9ba2","metric":73052,"metrics":{},"status":"discard","description":"Inline request-line iodata in Request.encode/4 to remove the encode_request_line/2 helper call","timestamp":1773408410011,"segment":0}
+{"run":17,"commit":"e8e9ba2","metric":72327,"metrics":{},"status":"discard","description":"Ask the compiler to inline downcase_ascii_char/1 in the HTTP/1 token parser","timestamp":1773408457152,"segment":0}

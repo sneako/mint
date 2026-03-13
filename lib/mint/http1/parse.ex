@@ -24,9 +24,22 @@ defmodule Mint.HTTP1.Parse do
     end
   end
 
+  @connection_close ["close"]
+  @connection_keep_alive ["keep-alive"]
+  @connection_keep_alive_upgrade ["keep-alive", "upgrade"]
+  @transfer_encoding_chunked ["chunked"]
+  @transfer_encoding_gzip_chunked ["gzip", "chunked"]
+
+  def connection_header("close"), do: {:ok, @connection_close}
+  def connection_header("Keep-Alive"), do: {:ok, @connection_keep_alive}
+  def connection_header("Keep-Alive, Upgrade"), do: {:ok, @connection_keep_alive_upgrade}
+
   def connection_header(string) do
     split_into_downcase_tokens(string)
   end
+
+  def transfer_encoding_header("chunked"), do: {:ok, @transfer_encoding_chunked}
+  def transfer_encoding_header("gzip, Chunked"), do: {:ok, @transfer_encoding_gzip_chunked}
 
   def transfer_encoding_header(string) do
     split_into_downcase_tokens(string)
