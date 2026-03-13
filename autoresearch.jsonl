@@ -1,0 +1,2 @@
+{"type":"config","name":"Mint HTTP/1 hot paths","metricName":"total_us","metricUnit":"µs","bestDirection":"lower"}
+{"run":1,"commit":"0bfcc86","metric":0,"metrics":{},"status":"crash","description":"Initial HTTP/1 hot-path autoresearch setup: first baseline failed due to benchmark script issues in request body attribute and header decoding corpus","timestamp":1773407804261,"segment":0}
