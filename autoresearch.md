@@ -40,4 +40,17 @@ Optimize Mint's HTTP/2 request-path hot spots with a fast, reproducible benchmar
   - basic GET request encoding with pseudo/default headers
   - POST request encoding with a body large enough to exercise DATA frame splitting
   - GET request encoding with a tiny peer max frame size to force HEADERS/CONTINUATION splitting
-- Baseline measurement pending.
+- Baseline after setup: `total_us=42150`.
+- **Kept:** skip pseudo-header sorting unless the user actually supplied pseudo-headers. This was the biggest first-step win on the request path.
+- **Kept:** normalize request header names and detect user pseudo-headers in one pass instead of `lower_raws/1` plus a second scan.
+- **Kept:** add common lowercase header-name fast paths to HTTP/2 request normalization.
+- **Kept:** add exact `GET` and `POST` pseudo-header assembly fast paths before the generic CONNECT-aware path.
+- **Discarded:** using metadata maps or tuple booleans from the normalization pass to skip `user-agent` / `content-length` default-header scans regressed.
+- **Discarded:** replacing the normalization reduce pipeline with direct recursion regressed.
+- **Discarded:** a binary fast path for `IO.iodata_to_binary/1` in DATA splitting regressed.
+- **Discarded:** a binary fast path for default `content-length` generation regressed.
+- **Discarded:** reordering the common header-name fast paths to favor benchmark frequency regressed.
+- **Discarded:** folding pseudo-header detection into the common-name fast paths regressed.
+- **Discarded:** replacing `Enum.map/2` in CONTINUATION frame assembly with direct recursion regressed.
+- **Discarded:** skipping `String.downcase/2` for arbitrary lowercase header names by pre-scanning for uppercase improved the continuation-heavy case but regressed the total mix.
+- Current best: `total_us=29135`.

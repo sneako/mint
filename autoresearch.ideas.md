@@ -1,3 +1,3 @@
-- Add a broader synthetic benchmark around `Mint.HTTP2.stream/2` so the loop can optimize decode-side work (frame parsing, HPACK decode, state transitions, flow-control updates) after the request path is explored.
-- If request encoding plateaus, benchmark `Mint.HTTP2.Frame.decode_next/2` and `Frame.encode/1` directly on representative frame sequences to see whether low-level frame parsing/assembly deserves its own optimization pass.
-- Explore carefully bounded expansions of the common-header fast paths in `Mint.HTTP2.request/5` only if they remain generic and don't bake in benchmark-only values.
+- Add a broader synthetic benchmark around `Mint.HTTP2.stream/2` so the next phase can optimize decode-side work (frame parsing, HPACK decode, state transitions, flow-control updates). Request encoding is improving, but the easy wins there are thinning out.
+- If request encoding is revisited, explore carefully bounded expansions of the common-header fast paths in `Mint.HTTP2.request/5` only when they remain generic and avoid benchmark-only values.
+- Consider a dedicated HTTP/2 frame encode/decode benchmark if the decode-side stream benchmark is too broad initially; this would isolate `Mint.HTTP2.Frame.decode_next/2` and `Frame.encode/1` on representative sequences.
