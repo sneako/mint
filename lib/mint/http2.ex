@@ -1372,6 +1372,26 @@ defmodule Mint.HTTP2 do
     end)
   end
 
+  defp add_pseudo_headers(headers, conn, "GET", path) do
+    [
+      {":method", "GET"},
+      {":path", path},
+      {":scheme", conn.scheme},
+      {":authority", conn.authority}
+      | headers
+    ]
+  end
+
+  defp add_pseudo_headers(headers, conn, "POST", path) do
+    [
+      {":method", "POST"},
+      {":path", path},
+      {":scheme", conn.scheme},
+      {":authority", conn.authority}
+      | headers
+    ]
+  end
+
   defp add_pseudo_headers(headers, conn, method, path) do
     if same_method?(method, "CONNECT") do
       [
