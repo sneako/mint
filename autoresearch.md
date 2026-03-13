@@ -48,12 +48,19 @@ Optimize Mint's HTTP/1 request encoding and response-header parsing hot paths wi
 - **Kept:** add exact-match fast paths for very common `connection` / `transfer-encoding` values (`close`, `Keep-Alive`, `Keep-Alive, Upgrade`, `chunked`, `gzip, Chunked`) before generic token parsing.
 - **Kept:** add exact-name validation fast paths for common request headers (`accept`, `accept-encoding`, `cache-control`, `content-length`, `content-type`, `host`, `user-agent`, `x-forwarded-for`, `x-request-id`) before falling back to generic bytewise validation.
 - **Kept:** add exact-value validation fast paths for a few common generic header values (`application/json`, `gzip, deflate, br`, `no-cache`).
+- **Kept:** flatten `Request.encode/4` and trailing-header encoding into one threaded iodata chain instead of stitching together nested helper results.
+- **Kept:** specialize `Request.encode/4` for `nil` and `:stream` bodies on top of the flattened builder.
+- **Kept:** specialize `encode_headers/2` for common request header names so they skip separate name-validation dispatch.
 - **Discarded:** recursive byte-by-byte request header validators regressed the request path noticeably.
 - **Discarded:** manual ASCII `content-length` parsing was slower than `String.trim_trailing/1` + `Integer.parse/1` on this workload.
 - **Discarded:** custom ASCII downcasing in `Mint.Core.Headers.lower_raw/1` was slower than `String.downcase(..., :ascii)`.
 - **Discarded:** direct `X-Trace-Id` binary-name fast path in `Response.decode_header/1` was slightly worse than the generic fallback.
 - **Discarded:** specializing `Request.encode/4` for `nil` / `:stream` bodies regressed.
 - **Discarded:** direct pair-specialization in `encode_headers/1` regressed versus the cheaper exact-name/value validator fast paths.
+- **Discarded:** re-testing pair-specialization inside the newer specialized encoder still regressed.
+- **Discarded:** moving generic validators to `for ... reduce:` scans regressed badly.
+- **Discarded:** validating outbound `content-length` with `Integer.parse/1` was slower than the generic visible-ASCII validator.
+- **Discarded:** a `header_name/1` binary fast path for `X-Trace-Id` was still slightly worse.
 - **Discarded / checks failed:** a manual exact-prefix parser for common response headers both regressed badly and broke `101 Switching Protocols` trailing-data handling by leaving an extra `\r\n` in the remainder.
 - **Discarded:** persistent-term cached compiled invalid-byte patterns plus `:binary.match/2` were much slower than the existing validation approach.
-- Current best: `total_us=51627`.
+- Current best: `total_us=48572`.
