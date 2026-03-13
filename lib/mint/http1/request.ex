@@ -49,6 +49,51 @@ defmodule Mint.HTTP1.Request do
 
   defp encode_headers([], tail), do: tail
 
+  defp encode_headers([{"accept", value} | headers], tail) do
+    validate_header_value!("accept", value)
+    ["accept", ": ", value, "\r\n" | encode_headers(headers, tail)]
+  end
+
+  defp encode_headers([{"accept-encoding", value} | headers], tail) do
+    validate_header_value!("accept-encoding", value)
+    ["accept-encoding", ": ", value, "\r\n" | encode_headers(headers, tail)]
+  end
+
+  defp encode_headers([{"cache-control", value} | headers], tail) do
+    validate_header_value!("cache-control", value)
+    ["cache-control", ": ", value, "\r\n" | encode_headers(headers, tail)]
+  end
+
+  defp encode_headers([{"content-length", value} | headers], tail) do
+    validate_header_value!("content-length", value)
+    ["content-length", ": ", value, "\r\n" | encode_headers(headers, tail)]
+  end
+
+  defp encode_headers([{"content-type", value} | headers], tail) do
+    validate_header_value!("content-type", value)
+    ["content-type", ": ", value, "\r\n" | encode_headers(headers, tail)]
+  end
+
+  defp encode_headers([{"host", value} | headers], tail) do
+    validate_header_value!("host", value)
+    ["host", ": ", value, "\r\n" | encode_headers(headers, tail)]
+  end
+
+  defp encode_headers([{"user-agent", value} | headers], tail) do
+    validate_header_value!("user-agent", value)
+    ["user-agent", ": ", value, "\r\n" | encode_headers(headers, tail)]
+  end
+
+  defp encode_headers([{"x-forwarded-for", value} | headers], tail) do
+    validate_header_value!("x-forwarded-for", value)
+    ["x-forwarded-for", ": ", value, "\r\n" | encode_headers(headers, tail)]
+  end
+
+  defp encode_headers([{"x-request-id", value} | headers], tail) do
+    validate_header_value!("x-request-id", value)
+    ["x-request-id", ": ", value, "\r\n" | encode_headers(headers, tail)]
+  end
+
   defp encode_headers([{name, value} | headers], tail) do
     validate_header_name!(name)
     validate_header_value!(name, value)
