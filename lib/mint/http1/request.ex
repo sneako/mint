@@ -47,6 +47,16 @@ defmodule Mint.HTTP1.Request do
     [Integer.to_string(length, 16), "\r\n", chunk, "\r\n"]
   end
 
+  defp validate_header_name!("accept"), do: :ok
+  defp validate_header_name!("accept-encoding"), do: :ok
+  defp validate_header_name!("cache-control"), do: :ok
+  defp validate_header_name!("content-length"), do: :ok
+  defp validate_header_name!("content-type"), do: :ok
+  defp validate_header_name!("host"), do: :ok
+  defp validate_header_name!("user-agent"), do: :ok
+  defp validate_header_name!("x-forwarded-for"), do: :ok
+  defp validate_header_name!("x-request-id"), do: :ok
+
   defp validate_header_name!(name) do
     _ =
       for <<char <- name>> do
