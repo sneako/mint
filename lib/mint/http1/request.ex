@@ -46,24 +46,31 @@ defmodule Mint.HTTP1.Request do
   end
 
   defp validate_header_name!(name) do
-    _ =
-      for <<char <- name>> do
-        unless is_tchar(char) do
-          throw({:mint, {:invalid_header_name, name}})
-        end
-      end
+    validate_header_name!(name, name)
+  end
 
-    :ok
+  defp validate_header_name!(<<>>, _original_name), do: :ok
+
+  defp validate_header_name!(<<char, rest::binary>>, original_name) when is_tchar(char) do
+    validate_header_name!(rest, original_name)
+  end
+
+  defp validate_header_name!(_invalid, original_name) do
+    throw({:mint, {:invalid_header_name, original_name}})
   end
 
   defp validate_header_value!(name, value) do
-    _ =
-      for <<char <- value>> do
-        unless is_vchar(char) or char in ~c"\s\t" do
-          throw({:mint, {:invalid_header_value, name, value}})
-        end
-      end
+    validate_header_value!(value, name, value)
+  end
 
-    :ok
+  defp validate_header_value!(<<>>, _name, _original_value), do: :ok
+
+  defp validate_header_value!(<<char, rest::binary>>, name, original_value)
+       when is_vchar(char) or char in ~c"\s\t" do
+    validate_header_value!(rest, name, original_value)
+  end
+
+  defp validate_header_value!(_invalid, name, original_value) do
+    throw({:mint, {:invalid_header_value, name, original_value}})
   end
 end

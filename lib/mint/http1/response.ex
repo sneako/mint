@@ -38,6 +38,13 @@ defmodule Mint.HTTP1.Response do
     end
   end
 
+  defp header_name(:Connection), do: "connection"
+  defp header_name(:Date), do: "date"
+  defp header_name(:Etag), do: "etag"
+  defp header_name(:Server), do: "server"
+  defp header_name(:"Content-Length"), do: "content-length"
+  defp header_name(:"Content-Type"), do: "content-type"
+  defp header_name(:"Transfer-Encoding"), do: "transfer-encoding"
   defp header_name(atom) when is_atom(atom), do: atom |> Atom.to_string() |> header_name()
   defp header_name(binary) when is_binary(binary), do: Headers.lower_raw(binary)
 end

@@ -1,2 +1,4 @@
 {"type":"config","name":"Mint HTTP/1 hot paths","metricName":"total_us","metricUnit":"µs","bestDirection":"lower"}
 {"run":1,"commit":"0bfcc86","metric":0,"metrics":{},"status":"crash","description":"Initial HTTP/1 hot-path autoresearch setup: first baseline failed due to benchmark script issues in request body attribute and header decoding corpus","timestamp":1773407804261,"segment":0}
+{"run":2,"commit":"6a4df95","metric":99635,"metrics":{},"status":"keep","description":"Set up HTTP/1 hot-path autoresearch harness, focused checks, and baseline benchmark","timestamp":1773407854222,"segment":0}
+{"run":3,"commit":"6a4df95","metric":100036,"metrics":{},"status":"discard","description":"Replace request header validation comprehensions with byte-recursive scans to cut allocations in Request.encode/4","timestamp":1773407897591,"segment":0}
