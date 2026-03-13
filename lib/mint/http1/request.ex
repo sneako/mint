@@ -20,18 +20,14 @@ defmodule Mint.HTTP1.Request do
     [method, ?\s, target, " HTTP/1.1\r\n"]
   end
 
-  defp encode_headers(headers) do
-    headers
-    |> encode_headers([])
-    |> :lists.reverse()
-  end
+  defp encode_headers(headers)
 
-  defp encode_headers([], acc), do: acc
+  defp encode_headers([]), do: []
 
-  defp encode_headers([{name, value} | headers], acc) do
+  defp encode_headers([{name, value} | headers]) do
     validate_header_name!(name)
     validate_header_value!(name, value)
-    encode_headers(headers, ["\r\n", value, ": ", name | acc])
+    [name, ": ", value, "\r\n" | encode_headers(headers)]
   end
 
   defp encode_body(nil), do: ""

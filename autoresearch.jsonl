@@ -7,3 +7,5 @@
 {"run":6,"commit":"e3b98b9","metric":105458,"metrics":{},"status":"discard","description":"Replace content-length trim-plus-parse with a manual ASCII parser in Mint.HTTP1.Parse","timestamp":1773407993158,"segment":0}
 {"run":7,"commit":"7a90baa","metric":79224,"metrics":{},"status":"keep","description":"Build connection and transfer-encoding tokens via byte lists instead of binary appends in HTTP/1 parsing","timestamp":1773408035703,"segment":0}
 {"run":8,"commit":"5e5b5ad","metric":72448,"metrics":{},"status":"keep","description":"Restore the original header validators after confirming the recursive request-path rewrite was a regression","timestamp":1773408071897,"segment":0}
+{"run":9,"commit":"df4b11d","metric":71552,"metrics":{},"status":"keep","description":"Encode HTTP/1 headers with a reversed iolist builder instead of nested Enum.reduce output","timestamp":1773408093481,"segment":0}
+{"run":10,"commit":"df4b11d","metric":74182,"metrics":{},"status":"discard","description":"Replace String.downcase(:ascii) with a custom ASCII binary builder in header normalization","timestamp":1773408133396,"segment":0}
