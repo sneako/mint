@@ -1339,11 +1339,22 @@ defmodule Mint.HTTP2 do
   defp normalize_request_headers(headers) do
     headers
     |> Enum.reduce({[], false}, fn {name, value}, {headers, has_pseudo_headers?} ->
-      name = Headers.lower_raw(name)
+      name = normalize_request_header_name(name)
       {[{name, value} | headers], has_pseudo_headers? or match?(<<?:, _::binary>>, name)}
     end)
     |> then(fn {headers, has_pseudo_headers?} -> {:lists.reverse(headers), has_pseudo_headers?} end)
   end
+
+  defp normalize_request_header_name("accept"), do: "accept"
+  defp normalize_request_header_name("accept-encoding"), do: "accept-encoding"
+  defp normalize_request_header_name("cache-control"), do: "cache-control"
+  defp normalize_request_header_name("content-length"), do: "content-length"
+  defp normalize_request_header_name("content-type"), do: "content-type"
+  defp normalize_request_header_name("host"), do: "host"
+  defp normalize_request_header_name("user-agent"), do: "user-agent"
+  defp normalize_request_header_name("x-forwarded-for"), do: "x-forwarded-for"
+  defp normalize_request_header_name("x-request-id"), do: "x-request-id"
+  defp normalize_request_header_name(name), do: Headers.lower_raw(name)
 
   defp add_default_headers(headers, body) do
     headers
