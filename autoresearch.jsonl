@@ -42,3 +42,4 @@
 {"run":41,"commit":"b35eaa9","metric":49910,"metrics":{},"status":"discard","description":"Re-test a single pair fast path for the longest common header pair: accept-encoding with gzip, deflate, br","timestamp":1773409708939,"segment":0}
 {"type":"config","name":"Mint HTTP/2 request encoding hot paths","metricName":"total_us","metricUnit":"µs","bestDirection":"lower"}
 {"run":1,"commit":"47ba773","metric":0,"metrics":{},"status":"crash","description":"Switch autoresearch target to HTTP/2 request encoding; first baseline failed because the synthetic benchmark reused depleted flow-control windows","timestamp":1773411575470,"segment":0}
+{"run":2,"commit":"ae88233","metric":42150,"metrics":{},"status":"keep","description":"Switch autoresearch to HTTP/2 request encoding with a synthetic benchmark and focused HTTP/2 checks","timestamp":1773411602692,"segment":0}

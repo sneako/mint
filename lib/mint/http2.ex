@@ -509,12 +509,14 @@ defmodule Mint.HTTP2 do
 
   def request(%__MODULE__{} = conn, method, path, headers, body)
       when is_binary(method) and is_binary(path) and is_list(headers) do
+    headers = Headers.lower_raws(headers)
+    has_pseudo_headers? = Enum.any?(headers, fn {name, _value} -> String.starts_with?(name, ":") end)
+
     headers =
       headers
-      |> Headers.lower_raws()
-      |> add_pseudo_headers(conn, method, path)
       |> add_default_headers(body)
-      |> sort_pseudo_headers_to_front()
+      |> add_pseudo_headers(conn, method, path)
+      |> maybe_sort_pseudo_headers_to_front(has_pseudo_headers?)
 
     {conn, stream_id, ref} = open_stream(conn)
     {conn, payload} = encode_request_payload(conn, stream_id, headers, body)
@@ -1383,6 +1385,9 @@ defmodule Mint.HTTP2 do
     do: same_method?(rest1, rest2)
 
   defp same_method?(_method1, _method2), do: false
+
+  defp maybe_sort_pseudo_headers_to_front(headers, false), do: headers
+  defp maybe_sort_pseudo_headers_to_front(headers, true), do: sort_pseudo_headers_to_front(headers)
 
   defp sort_pseudo_headers_to_front(headers) do
     Enum.sort_by(headers, fn {key, _value} ->
