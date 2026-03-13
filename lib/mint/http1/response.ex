@@ -21,6 +21,27 @@ defmodule Mint.HTTP1.Response do
 
   def decode_header(binary) do
     case :erlang.decode_packet(:httph_bin, binary, []) do
+      {:ok, {:http_header, _unused, :Connection, _reserved, value}, rest} ->
+        {:ok, {"connection", value}, rest}
+
+      {:ok, {:http_header, _unused, :Date, _reserved, value}, rest} ->
+        {:ok, {"date", value}, rest}
+
+      {:ok, {:http_header, _unused, :Etag, _reserved, value}, rest} ->
+        {:ok, {"etag", value}, rest}
+
+      {:ok, {:http_header, _unused, :Server, _reserved, value}, rest} ->
+        {:ok, {"server", value}, rest}
+
+      {:ok, {:http_header, _unused, :"Content-Length", _reserved, value}, rest} ->
+        {:ok, {"content-length", value}, rest}
+
+      {:ok, {:http_header, _unused, :"Content-Type", _reserved, value}, rest} ->
+        {:ok, {"content-type", value}, rest}
+
+      {:ok, {:http_header, _unused, :"Transfer-Encoding", _reserved, value}, rest} ->
+        {:ok, {"transfer-encoding", value}, rest}
+
       {:ok, {:http_header, _unused, name, _reserved, value}, rest} ->
         {:ok, {header_name(name), value}, rest}
 

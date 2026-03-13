@@ -36,9 +36,15 @@ Optimize Mint's HTTP/1 request encoding and response-header parsing hot paths wi
 - Avoid adding complexity unless the gain is clear and repeatable.
 
 ## What's Been Tried
-- Initial setup only.
-- Created a benchmark around two reproducible micro-workloads:
+- Initial setup created a benchmark around two reproducible micro-workloads:
   - repeated `Mint.HTTP1.Request.encode/4` on a realistic POST request
   - repeated response-header decode flow covering `Response.decode_header/1`, `Parse.content_length_header/1`, `Parse.connection_header/1`, and `Parse.transfer_encoding_header/1`
-- Created focused checks for HTTP/1 parse/request/conn tests.
-- Baseline measurement pending.
+- Focused checks: `test/mint/http1/parse_test.exs`, `test/mint/http1/request_test.exs`, and `test/mint/http1/conn_test.exs`.
+- Baseline after setup: `total_us=99635`.
+- **Kept:** cache lowercase strings for common atom header names in `Mint.HTTP1.Response.header_name/1`. This was the biggest response-path win so far.
+- **Kept:** build connection/transfer-encoding tokens via byte lists instead of repeated binary appends in `Mint.HTTP1.Parse`.
+- **Kept:** replace nested/reversed request-header builders with direct recursive iodata construction in `Mint.HTTP1.Request.encode_headers/1`.
+- **Discarded:** recursive byte-by-byte request header validators regressed the request path noticeably.
+- **Discarded:** manual ASCII `content-length` parsing was slower than `String.trim_trailing/1` + `Integer.parse/1` on this workload.
+- **Discarded:** custom ASCII downcasing in `Mint.Core.Headers.lower_raw/1` was slower than `String.downcase(..., :ascii)`.
+- Current best after the kept changes above: `total_us=71327`.

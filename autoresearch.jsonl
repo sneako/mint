@@ -9,3 +9,5 @@
 {"run":8,"commit":"5e5b5ad","metric":72448,"metrics":{},"status":"keep","description":"Restore the original header validators after confirming the recursive request-path rewrite was a regression","timestamp":1773408071897,"segment":0}
 {"run":9,"commit":"df4b11d","metric":71552,"metrics":{},"status":"keep","description":"Encode HTTP/1 headers with a reversed iolist builder instead of nested Enum.reduce output","timestamp":1773408093481,"segment":0}
 {"run":10,"commit":"df4b11d","metric":74182,"metrics":{},"status":"discard","description":"Replace String.downcase(:ascii) with a custom ASCII binary builder in header normalization","timestamp":1773408133396,"segment":0}
+{"run":11,"commit":"d4865db","metric":71327,"metrics":{},"status":"keep","description":"Build HTTP/1 header iodata directly with recursive clauses instead of reversing an accumulator","timestamp":1773408184662,"segment":0}
+{"run":12,"commit":"d4865db","metric":94214,"metrics":{},"status":"discard","description":"Fast-path content-length parsing by skipping trim_trailing unless the final byte is whitespace","timestamp":1773408236953,"segment":0}
