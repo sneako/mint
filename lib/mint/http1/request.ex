@@ -5,10 +5,11 @@ defmodule Mint.HTTP1.Request do
 
   def encode(method, target, headers, body) do
     body = [
-      encode_request_line(method, target),
-      encode_headers(headers),
-      "\r\n",
-      encode_body(body)
+      method,
+      ?\s,
+      target,
+      " HTTP/1.1\r\n"
+      | encode_headers(headers, ["\r\n", encode_body(body)])
     ]
 
     {:ok, body}
@@ -16,18 +17,12 @@ defmodule Mint.HTTP1.Request do
     {:mint, reason} -> {:error, reason}
   end
 
-  defp encode_request_line(method, target) do
-    [method, ?\s, target, " HTTP/1.1\r\n"]
-  end
+  defp encode_headers([], tail), do: tail
 
-  defp encode_headers(headers)
-
-  defp encode_headers([]), do: []
-
-  defp encode_headers([{name, value} | headers]) do
+  defp encode_headers([{name, value} | headers], tail) do
     validate_header_name!(name)
     validate_header_value!(name, value)
-    [name, ": ", value, "\r\n" | encode_headers(headers)]
+    [name, ": ", value, "\r\n" | encode_headers(headers, tail)]
   end
 
   defp encode_body(nil), do: ""
@@ -39,7 +34,7 @@ defmodule Mint.HTTP1.Request do
   end
 
   def encode_chunk({:eof, trailing_headers}) do
-    ["0\r\n", encode_headers(trailing_headers), "\r\n"]
+    ["0\r\n" | encode_headers(trailing_headers, ["\r\n"])]
   end
 
   def encode_chunk(chunk) do
